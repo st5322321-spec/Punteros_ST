@@ -1,0 +1,55 @@
+#include <iostream>
+
+void calcularSumasFilas(int** matriz, int n, int m) {
+    for (int i = 0; i < n; i++) {
+        int suma = 0;
+        for (int j = 0; j < m; j++) {
+            suma += *(*(matriz + i) + j); // Aritmética de punteros
+        }
+        std::cout << "Suma fila " << i << ": " << suma << "\n";
+    }
+}
+
+int encontrarMayor(int** matriz, int n, int m) {
+    int mayor = **matriz;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (*(*(matriz + i) + j) > mayor) mayor = *(*(matriz + i) + j);
+        }
+    }
+    return mayor;
+}
+
+int** transponer(int** matriz, int n, int m) {
+    int** t = new int*[m];
+    for (int i = 0; i < m; i++) {
+        t[i] = new int[n];
+        for (int j = 0; j < n; j++) {
+            t[i][j] = matriz[j][i];
+        }
+    }
+    return t;
+}
+
+int main() {
+    int n, m;
+    std::cout << "Dimensiones (n m): "; std::cin >> n >> m;
+
+    int** mat = new int*[n];
+    for (int i = 0; i < n; i++) {
+        mat[i] = new int[m];
+        for (int j = 0; j < m; j++) {
+            std::cout << "Elemento [" << i << "][" << j << "]: ";
+            std::cin >> mat[i][j];
+        }
+    }
+
+    calcularSumasFilas(mat, n, m);
+    std::cout << "Mayor: " << encontrarMayor(mat, n, m) << "\n";
+
+    // Limpieza de memoria (importante)
+    for (int i = 0; i < n; i++) delete[] mat[i];
+    delete[] mat;
+
+    return 0;
+}
